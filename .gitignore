@@ -1,0 +1,49 @@
+# Audio files
+assets/songs/*.mp3
+assets/songs/*.wav
+assets/songs/*.ogg
+assets/songs/*.m4a
+assets/songs/*.flac
+
+# Image files
+assets/thumbnails/*.jpg
+assets/thumbnails/*.jpeg
+assets/thumbnails/*.png
+assets/thumbnails/*.gif
+assets/thumbnails/*.webp
+assets/thumbnails/*.bmp
+assets/thumbnails/*.jiff
+assets/thumbnails/*.jfif
+
+# Keep README files in asset folders
+!assets/songs/README.md
+!assets/thumbnails/README.md
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.so
+
+# Logs
+*.log
+npm-debug.log*
+
+# Temporary files
+*.tmp
+*.bak
+*.cache

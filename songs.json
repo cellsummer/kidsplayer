@@ -1,0 +1,74 @@
+[
+  {
+    "id": "song1",
+    "title": "一只哈巴狗",
+    "audioFile": "一只哈巴狗.mp3",
+    "thumbnail": "一只哈巴狗.jfif"
+  },
+  {
+    "id": "song2",
+    "title": "两只老虎",
+    "audioFile": "两只老虎.mp3",
+    "thumbnail": "两只老虎.jfif"
+  },
+  {
+    "id": "song3",
+    "title": "大风车",
+    "audioFile": "大风车.mp3",
+    "thumbnail": "大风车.jfif"
+  },
+  {
+    "id": "song4",
+    "title": "小兔子乖乖",
+    "audioFile": "小兔子乖乖.mp3",
+    "thumbnail": "小兔子乖乖.jfif"
+  },
+  {
+    "id": "song5",
+    "title": "小星星",
+    "audioFile": "小星星.mp3",
+    "thumbnail": "小星星.jfif"
+  },
+  {
+    "id": "song6",
+    "title": "小毛驴",
+    "audioFile": "小毛驴.mp3",
+    "thumbnail": "小毛驴.jfif"
+  },
+  {
+    "id": "song7",
+    "title": "小白兔白又白",
+    "audioFile": "小白兔白又白.mp3",
+    "thumbnail": "小白兔白又白.jfif"
+  },
+  {
+    "id": "song8",
+    "title": "拔萝卜",
+    "audioFile": "拔萝卜.mp3",
+    "thumbnail": "拔萝卜.jfif"
+  },
+  {
+    "id": "song9",
+    "title": "摇篮曲",
+    "audioFile": "摇篮曲.mp3",
+    "thumbnail": "摇篮曲.jfif"
+  },
+  {
+    "id": "song10",
+    "title": "数鸭子",
+    "audioFile": "数鸭子.mp3",
+    "thumbnail": "数鸭子.jfif"
+  },
+  {
+    "id": "song11",
+    "title": "粉刷匠",
+    "audioFile": "粉刷匠.mp3",
+    "thumbnail": "粉刷匠.jfif"
+  },
+  {
+    "id": "song12",
+    "title": "蜗牛与黄鹂鸟",
+    "audioFile": "蜗牛与黄鹂鸟.mp3",
+    "thumbnail": "蜗牛与黄鹂鸟.jfif"
+  }
+]

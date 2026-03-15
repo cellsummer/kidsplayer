@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thumbnail Generator - Kids Music Player</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Arial', sans-serif;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        h1 {
+            text-align: center;
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        .instructions {
+            background: #f0f4ff;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            border-left: 4px solid #667eea;
+        }
+
+        .instructions h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .instructions ol {
+            margin-left: 20px;
+            line-height: 1.8;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .thumbnail-card {
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 15px;
+            background: #fafafa;
+        }
+
+        .thumbnail-card h3 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        canvas {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            margin-bottom: 10px;
+            cursor: pointer;
+        }
+
+        .controls {
+            margin-bottom: 10px;
+        }
+
+        .controls input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-bottom: 5px;
+        }
+
+        .controls select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-bottom: 5px;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn-download {
+            background: #4CAF50;
+            color: white;
+        }
+
+        .btn-regenerate {
+            background: #667eea;
+            color: white;
+            margin-top: 5px;
+        }
+
+        .btn-all {
+            background: #FF6B6B;
+            color: white;
+            padding: 15px 30px;
+            font-size: 1.1em;
+            margin: 20px auto;
+            display: block;
+            width: auto;
+            min-width: 300px;
+        }
+
+        .emoji-size {
+            font-size: 3em;
+        }
+
+        .footer {
+            text-align: center;
+            color: #666;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #e0e0e0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎨 Thumbnail Generator</h1>
+        <p class="subtitle">Create colorful thumbnails for Kids Music Player</p>
+
+        <div class="instructions">
+            <h3>📋 Instructions:</h3>
+            <ol>
+                <li>Each thumbnail is automatically generated with a colorful gradient and emoji</li>
+                <li>Edit the title and emoji for each song</li>
+                <li>Click "Download" to save individual thumbnails</li>
+                <li>Or click "Download All Thumbnails" at the bottom to get all at once</li>
+                <li>Save the images to <code>assets/thumbnails/</code> folder</li>
+            </ol>
+        </div>
+
+        <div class="grid" id="thumbnailGrid"></div>
+
+        <button class="btn btn-all" onclick="downloadAll()">📥 Download All Thumbnails as ZIP</button>
+
+        <div class="footer">
+            <p>Generated thumbnails are 800x800px PNG files, perfect for the Kids Music Player!</p>
+            <p>Click on any thumbnail to download it individually.</p>
+        </div>
+    </div>
+
+    <script>
+        const songs = [
+            { id: 'song1', title: 'Happy Song', emoji: '😊', gradient: ['#FF6B6B', '#FFE66D'] },
+            { id: 'song2', title: 'Dance Time', emoji: '💃', gradient: ['#4ECDC4', '#44A08D'] },
+            { id: 'song3', title: 'Sweet Dreams', emoji: '🌙', gradient: ['#A8EDEA', '#FED6E3'] },
+            { id: 'song4', title: 'Adventure', emoji: '🚀', gradient: ['#F093FB', '#F5576C'] },
+            { id: 'song5', title: 'Playtime', emoji: '🎈', gradient: ['#FA709A', '#FEE140'] },
+            { id: 'song6', title: 'Sunshine', emoji: '☀️', gradient: ['#FDEB71', '#F8D800'] }
+        ];
+
+        const canvases = {};
+
+        function createThumbnail(song, canvas) {
+            const ctx = canvas.getContext('2d');
+            const size = 800;
+            canvas.width = size;
+            canvas.height = size;
+
+            // Create gradient background
+            const gradient = ctx.createLinearGradient(0, 0, size, size);
+            gradient.addColorStop(0, song.gradient[0]);
+            gradient.addColorStop(1, song.gradient[1]);
+
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, size, size);
+
+            // Add subtle pattern/texture
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.1)';
+            for (let i = 0; i < 50; i++) {
+                ctx.beginPath();
+                ctx.arc(
+                    Math.random() * size,
+                    Math.random() * size,
+                    Math.random() * 100 + 20,
+                    0,
+                    Math.PI * 2
+                );
+                ctx.fill();
+            }
+
+            // Draw emoji
+            ctx.font = 'bold 300px Arial';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+
+            // Shadow for emoji
+            ctx.shadowColor = 'rgba(0, 0, 0, 0.3)';
+            ctx.shadowBlur = 20;
+            ctx.shadowOffsetX = 10;
+            ctx.shadowOffsetY = 10;
+
+            ctx.fillText(song.emoji, size / 2, size / 2 - 80);
+
+            // Reset shadow
+            ctx.shadowColor = 'transparent';
+            ctx.shadowBlur = 0;
+            ctx.shadowOffsetX = 0;
+            ctx.shadowOffsetY = 0;
+
+            // Draw title background
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.95)';
+            ctx.fillRect(0, size - 180, size, 180);
+
+            // Draw title
+            ctx.fillStyle = '#333';
+            ctx.font = 'bold 70px Arial';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(song.title, size / 2, size - 90);
+
+            // Add decorative border
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.5)';
+            ctx.lineWidth = 10;
+            ctx.strokeRect(5, 5, size - 10, size - 10);
+        }
+
+        function downloadImage(canvas, filename) {
+            const link = document.createElement('a');
+            link.download = filename;
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+        }
+
+        function createThumbnailCard(song) {
+            const card = document.createElement('div');
+            card.className = 'thumbnail-card';
+
+            const title = document.createElement('h3');
+            title.textContent = `${song.id}.jpg`;
+            card.appendChild(title);
+
+            const canvas = document.createElement('canvas');
+            canvas.onclick = () => downloadImage(canvas, `${song.id}.jpg`);
+            card.appendChild(canvas);
+            canvases[song.id] = canvas;
+
+            const controls = document.createElement('div');
+            controls.className = 'controls';
+
+            const titleInput = document.createElement('input');
+            titleInput.type = 'text';
+            titleInput.value = song.title;
+            titleInput.placeholder = 'Song Title';
+            controls.appendChild(titleInput);
+
+            const emojiInput = document.createElement('input');
+            emojiInput.type = 'text';
+            emojiInput.value = song.emoji;
+            emojiInput.placeholder = 'Emoji';
+            emojiInput.maxLength = 2;
+            controls.appendChild(emojiInput);
+
+            const colorSelect = document.createElement('select');
+            const gradients = [
+                { name: 'Red-Yellow', value: ['#FF6B6B', '#FFE66D'] },
+                { name: 'Teal-Green', value: ['#4ECDC4', '#44A08D'] },
+                { name: 'Pink-Blue', value: ['#A8EDEA', '#FED6E3'] },
+                { name: 'Purple-Pink', value: ['#F093FB', '#F5576C'] },
+                { name: 'Pink-Yellow', value: ['#FA709A', '#FEE140'] },
+                { name: 'Yellow-Orange', value: ['#FDEB71', '#F8D800'] },
+                { name: 'Blue-Purple', value: ['#667eea', '#764ba2'] },
+                { name: 'Green-Lime', value: ['#56ab2f', '#a8e063'] },
+                { name: 'Ocean', value: ['#2193b0', '#6dd5ed'] },
+                { name: 'Sunset', value: ['#f46b45', '#eea849'] }
+            ];
+
+            gradients.forEach((g, i) => {
+                const option = document.createElement('option');
+                option.value = i;
+                option.textContent = g.name;
+                if (JSON.stringify(g.value) === JSON.stringify(song.gradient)) {
+                    option.selected = true;
+                }
+                colorSelect.appendChild(option);
+            });
+
+            controls.appendChild(colorSelect);
+            card.appendChild(controls);
+
+            const regenerateBtn = document.createElement('button');
+            regenerateBtn.className = 'btn btn-regenerate';
+            regenerateBtn.textContent = '🔄 Regenerate';
+            regenerateBtn.onclick = () => {
+                song.title = titleInput.value;
+                song.emoji = emojiInput.value;
+                song.gradient = gradients[colorSelect.value].value;
+                createThumbnail(song, canvas);
+            };
+            card.appendChild(regenerateBtn);
+
+            const downloadBtn = document.createElement('button');
+            downloadBtn.className = 'btn btn-download';
+            downloadBtn.textContent = `📥 Download ${song.id}.jpg`;
+            downloadBtn.onclick = () => downloadImage(canvas, `${song.id}.jpg`);
+            card.appendChild(downloadBtn);
+
+            return card;
+        }
+
+        function downloadAll() {
+            songs.forEach(song => {
+                setTimeout(() => {
+                    downloadImage(canvases[song.id], `${song.id}.jpg`);
+                }, 200 * songs.indexOf(song));
+            });
+
+            alert(`Downloading ${songs.length} thumbnails!\n\nEach file will download one at a time.\nSave them to the assets/thumbnails/ folder.`);
+        }
+
+        // Initialize
+        const grid = document.getElementById('thumbnailGrid');
+        songs.forEach(song => {
+            const card = createThumbnailCard(song);
+            grid.appendChild(card);
+            createThumbnail(song, canvases[song.id]);
+        });
+    </script>
+</body>
+</html>

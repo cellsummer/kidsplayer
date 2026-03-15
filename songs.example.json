@@ -1,0 +1,38 @@
+[
+  {
+    "id": "song1",
+    "title": "Happy Song",
+    "audioFile": "song1.mp3",
+    "thumbnail": "song1.jpg"
+  },
+  {
+    "id": "song2",
+    "title": "Dance Time",
+    "audioFile": "song2.mp3",
+    "thumbnail": "song2.jpg"
+  },
+  {
+    "id": "song3",
+    "title": "Sweet Dreams",
+    "audioFile": "song3.mp3",
+    "thumbnail": "song3.jpg"
+  },
+  {
+    "id": "song4",
+    "title": "Adventure",
+    "audioFile": "song4.mp3",
+    "thumbnail": "song4.jpg"
+  },
+  {
+    "id": "song5",
+    "title": "Playtime",
+    "audioFile": "song5.mp3",
+    "thumbnail": "song5.jpg"
+  },
+  {
+    "id": "song6",
+    "title": "Sunshine",
+    "audioFile": "song6.mp3",
+    "thumbnail": "song6.jpg"
+  }
+]
